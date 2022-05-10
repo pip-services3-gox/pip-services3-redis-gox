@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>lock - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../../lib/godoc/style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../../lib/godoc/jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.13.15";</script>
+<script src="../../lib/godoc/godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="../index.html">Go Documentation Server</a></div>
+<div class="top-heading" id="heading-narrow"><a href="../index.html">GoDoc</a></div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="http://localhost:6060/search">
+<div id="menu">
+
+<span class="search-box"><input type="search" id="search" name="q" placeholder="Search" aria-label="Search" required><button type="submit"><span><!-- magnifying glass: --><svg width="24" height="24" viewBox="0 0 24 24"><title>submit search</title><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg></span></button></span>
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package lock
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "lock"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="index.html#RedisLock">type RedisLock</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewRedisLock">func NewRedisLock() *RedisLock</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisLock.Close">func (c *RedisLock) Close(correlationId string) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisLock.Configure">func (c *RedisLock) Configure(config *cconf.ConfigParams)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisLock.IsOpen">func (c *RedisLock) IsOpen() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisLock.Open">func (c *RedisLock) Open(correlationId string) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisLock.ReleaseLock">func (c *RedisLock) ReleaseLock(correlationId string, key string) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisLock.SetReferences">func (c *RedisLock) SetReferences(references cref.IReferences)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisLock.TryAcquireLock">func (c *RedisLock) TryAcquireLock(correlationId string, key string, ttl int64) (result bool, err error)</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="http://localhost:6060/src/lock/RedisLock.go">RedisLock.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+		
+			
+			
+			<h2 id="RedisLock">type <a href="http://localhost:6060/src/lock/RedisLock.go?s=1939:2144#L49">RedisLock</a>
+				<a class="permalink" href="index.html#RedisLock">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+RedisLock are distributed lock that is implemented based on Redis in-memory database.
+</p>
+<p>
+Configuration parameters:
+</p>
+<pre>- connection(s):
+  - discovery_key:         (optional) a key to retrieve the connection from IDiscovery
+  - host:                  host name or IP address
+  - port:                  port number
+  - uri:                   resource URI or connection string with all parameters in it
+- credential(s):
+  - store_key:             key to retrieve parameters from credential store
+  - username:              user name (currently is not used)
+  - password:              user password
+- options:
+  - retrytimeout:         timeout in milliseconds to retry lock acquisition. (Default: 100)
+  - retries:               number of retries (default: 3)
+  - db_num:                database number in Redis  (default 0)
+</pre>
+<p>
+References:
+</p>
+<p>
+- *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
+- *:credential-store:*:*:1.0 (optional) Credential stores to resolve credential
+</p>
+<p>
+Example:
+</p>
+<pre>lock = NewRedisRedis();
+lock.Configure(cconf.NewConfigParamsFromTuples(
+  &#34;host&#34;, &#34;localhost&#34;,
+  &#34;port&#34;, 6379,
+));
+
+err = lock.Open(&#34;123&#34;)
+  ...
+
+result, err := lock.TryAcquireLock(&#34;123&#34;, &#34;key1&#34;, 3000)
+if result {
+	// Processing...
+}
+err = lock.ReleaseLock(&#34;123&#34;, &#34;key1&#34;)
+// Continue...
+</pre>
+
+			<pre>type RedisLock struct {
+    *<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-components-go/lock/">clock</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-components-go/lock/#Lock">Lock</a>
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewRedisLock">func <a href="http://localhost:6060/src/lock/RedisLock.go?s=2210:2240#L63">NewRedisLock</a>
+					<a class="permalink" href="index.html#NewRedisLock">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func NewRedisLock() *<a href="index.html#RedisLock">RedisLock</a></pre>
+				<p>
+NewRedisLock method are creates a new instance of this lock.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="RedisLock.Close">func (*RedisLock) <a href="http://localhost:6060/src/lock/RedisLock.go?s=5217:5270#L159">Close</a>
+					<a class="permalink" href="index.html#RedisLock.Close">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#RedisLock">RedisLock</a>) Close(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+				<p>
+Close method are closes component and frees used resources.
+Parameters:
+</p>
+<pre>- correlationId 	(optional) transaction id to trace execution through call chain.
+</pre>
+<p>
+Retruns: error or nil no errors occured.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="RedisLock.Configure">func (*RedisLock) <a href="http://localhost:6060/src/lock/RedisLock.go?s=2700:2757#L80">Configure</a>
+					<a class="permalink" href="index.html#RedisLock.Configure">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#RedisLock">RedisLock</a>) Configure(config *<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/config/">cconf</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/config/#ConfigParams">ConfigParams</a>)</pre>
+				<p>
+Configure method are configures component by passing configuration parameters.
+Parameters:
+</p>
+<pre>- config    configuration parameters to be set.
+</pre>
+
+				
+				
+				
+			
+				
+				<h3 id="RedisLock.IsOpen">func (*RedisLock) <a href="http://localhost:6060/src/lock/RedisLock.go?s=3556:3589#L102">IsOpen</a>
+					<a class="permalink" href="index.html#RedisLock.IsOpen">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#RedisLock">RedisLock</a>) IsOpen() <a href="http://localhost:6060/pkg/builtin/#bool">bool</a></pre>
+				<p>
+IsOpen method are checks if the component is opened.
+Returns true if the component has been opened and false otherwise.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="RedisLock.Open">func (*RedisLock) <a href="http://localhost:6060/src/lock/RedisLock.go?s=3804:3856#L110">Open</a>
+					<a class="permalink" href="index.html#RedisLock.Open">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#RedisLock">RedisLock</a>) Open(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+				<p>
+Open method are opens the component.
+Parameters:
+</p>
+<pre>- correlationId 	(optional) transaction id to trace execution through call chain.
+</pre>
+<p>
+Returns: error or nil no errors occured.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="RedisLock.ReleaseLock">func (*RedisLock) <a href="http://localhost:6060/src/lock/RedisLock.go?s=6639:6710#L203">ReleaseLock</a>
+					<a class="permalink" href="index.html#RedisLock.ReleaseLock">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#RedisLock">RedisLock</a>) ReleaseLock(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+				<p>
+ReleaseLock method are releases prevously acquired lock by its key.
+</p>
+<pre>- correlationId     (optional) transaction id to trace execution through call chain.
+- key               a unique lock key to release.
+</pre>
+<p>
+Returns: error or nil for success.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="RedisLock.SetReferences">func (*RedisLock) <a href="http://localhost:6060/src/lock/RedisLock.go?s=3266:3328#L95">SetReferences</a>
+					<a class="permalink" href="index.html#RedisLock.SetReferences">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#RedisLock">RedisLock</a>) SetReferences(references <a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/refer/">cref</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/refer/#IReferences">IReferences</a>)</pre>
+				<p>
+SetReferences method are sets references to dependent components.
+Parameters:
+</p>
+<pre>- references 	references to locate the component dependencies.
+</pre>
+
+				
+				
+				
+			
+				
+				<h3 id="RedisLock.TryAcquireLock">func (*RedisLock) <a href="http://localhost:6060/src/lock/RedisLock.go?s=6030:6134#L186">TryAcquireLock</a>
+					<a class="permalink" href="index.html#RedisLock.TryAcquireLock">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#RedisLock">RedisLock</a>) TryAcquireLock(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>, ttl <a href="http://localhost:6060/pkg/builtin/#int64">int64</a>) (result <a href="http://localhost:6060/pkg/builtin/#bool">bool</a>, err <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
+				<p>
+TryAcquireLock method are makes a single attempt to acquire a lock by its key.
+It returns immediately a positive or negative result.
+Parameters:
+</p>
+<pre>- correlationId     (optional) transaction id to trace execution through call chain.
+- key               a unique lock key to acquire.
+- ttl               a lock timeout (time to live) in milliseconds.
+</pre>
+<p>
+Returns: a lock result or error.
+</p>
+
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.13.15.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="http://localhost:6060/LICENSE">BSD license</a>.<br>
+<a href="http://localhost:6060/doc/tos.html">Terms of Service</a> |
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>
