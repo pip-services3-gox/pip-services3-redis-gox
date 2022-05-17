@@ -39,6 +39,7 @@ jobs:
 
   metrics:
     needs: ci
+    if: always()
     runs-on: ubuntu-18.04
 
     steps: 
