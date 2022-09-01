@@ -196,12 +196,12 @@
     <span id="KEY5">KEY5</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;key5&#34;
     <span id="KEY6">KEY6</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;key6&#34;
 
-    <span id="VALUE1">VALUE1</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a>                 = &#34;value1&#34;
-    <span id="VALUE2">VALUE2</span> map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]interface{} = map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]interface{}{&#34;val&#34;: &#34;value2&#34;}
-    <span id="VALUE3">VALUE3</span> <a href="http://localhost:6060/pkg/time/">time</a>.<a href="http://localhost:6060/pkg/time/#Time">Time</a>              = <a href="http://localhost:6060/pkg/time/">time</a>.<a href="http://localhost:6060/pkg/time/#Now">Now</a>()
-    <span id="VALUE4">VALUE4</span> []<a href="http://localhost:6060/pkg/builtin/#int">int</a>                  = []<a href="http://localhost:6060/pkg/builtin/#int">int</a>{1, 2, 3, 4}
-    <span id="VALUE5">VALUE5</span> <a href="http://localhost:6060/pkg/builtin/#int">int</a>                    = 12345
-    <span id="VALUE6">VALUE6</span> interface{}            = <a href="http://localhost:6060/pkg/builtin/#nil">nil</a>
+    <span id="VALUE1">VALUE1</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a>         = &#34;value1&#34;
+    <span id="VALUE2">VALUE2</span> map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]<a href="http://localhost:6060/pkg/builtin/#any">any</a> = map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]<a href="http://localhost:6060/pkg/builtin/#any">any</a>{&#34;val&#34;: &#34;value2&#34;}
+    <span id="VALUE3">VALUE3</span> <a href="http://localhost:6060/pkg/time/">time</a>.<a href="http://localhost:6060/pkg/time/#Time">Time</a>      = <a href="http://localhost:6060/pkg/time/">time</a>.<a href="http://localhost:6060/pkg/time/#Now">Now</a>()
+    <span id="VALUE4">VALUE4</span> []<a href="http://localhost:6060/pkg/builtin/#int">int</a>          = []<a href="http://localhost:6060/pkg/builtin/#int">int</a>{1, 2, 3, 4}
+    <span id="VALUE5">VALUE5</span> <a href="http://localhost:6060/pkg/builtin/#int">int</a>            = 12345
+    <span id="VALUE6">VALUE6</span> <a href="http://localhost:6060/pkg/builtin/#any">any</a>            = <a href="http://localhost:6060/pkg/builtin/#nil">nil</a>
 )</pre>
 			
 		
@@ -209,7 +209,7 @@
 		
 			
 			
-			<h2 id="CacheFixture">type <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=650:706#L19">CacheFixture</a>
+			<h2 id="CacheFixture">type <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=594:650#L19">CacheFixture</a>
 				<a class="permalink" href="index.html#CacheFixture">&#xb6;</a>
 				
 				
@@ -230,7 +230,7 @@
 
 			
 				
-				<h3 id="NewCacheFixture">func <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=710:770#L23">NewCacheFixture</a>
+				<h3 id="NewCacheFixture">func <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=654:714#L23">NewCacheFixture</a>
 					<a class="permalink" href="index.html#NewCacheFixture">&#xb6;</a>
 					
 					
@@ -243,7 +243,7 @@
 
 			
 				
-				<h3 id="CacheFixture.TestRemove">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=2726:2773#L110">TestRemove</a>
+				<h3 id="CacheFixture.TestRemove">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=2662:2709#L110">TestRemove</a>
 					<a class="permalink" href="index.html#CacheFixture.TestRemove">&#xb6;</a>
 					
 					
@@ -255,7 +255,7 @@
 				
 			
 				
-				<h3 id="CacheFixture.TestRetrieveExpired">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=2421:2477#L97">TestRetrieveExpired</a>
+				<h3 id="CacheFixture.TestRetrieveExpired">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=2357:2413#L97">TestRetrieveExpired</a>
 					<a class="permalink" href="index.html#CacheFixture.TestRetrieveExpired">&#xb6;</a>
 					
 					
@@ -267,7 +267,7 @@
 				
 			
 				
-				<h3 id="CacheFixture.TestStoreAndRetrieve">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=831:888#L29">TestStoreAndRetrieve</a>
+				<h3 id="CacheFixture.TestStoreAndRetrieve">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=775:832#L29">TestStoreAndRetrieve</a>
 					<a class="permalink" href="index.html#CacheFixture.TestStoreAndRetrieve">&#xb6;</a>
 					
 					

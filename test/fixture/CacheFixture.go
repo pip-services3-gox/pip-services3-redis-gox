@@ -18,12 +18,12 @@ var (
 	KEY5 string = "key5"
 	KEY6 string = "key6"
 
-	VALUE1 string                 = "value1"
-	VALUE2 map[string]interface{} = map[string]interface{}{"val": "value2"}
-	VALUE3 time.Time              = time.Now()
-	VALUE4 []int                  = []int{1, 2, 3, 4}
-	VALUE5 int                    = 12345
-	VALUE6 interface{}            = nil
+	VALUE1 string         = "value1"
+	VALUE2 map[string]any = map[string]any{"val": "value2"}
+	VALUE3 time.Time      = time.Now()
+	VALUE4 []int          = []int{1, 2, 3, 4}
+	VALUE5 int            = 12345
+	VALUE6 any            = nil
 )
 
 type CacheFixture struct {
@@ -68,7 +68,7 @@ func (c *CacheFixture) TestStoreAndRetrieve(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.NotNil(t, val)
-	assert.Equal(t, VALUE2, val.(map[string]interface{}))
+	assert.Equal(t, VALUE2, val.(map[string]any))
 
 	val, err = c.cache.Retrieve(ctx, "", KEY3)
 	assert.Nil(t, err)

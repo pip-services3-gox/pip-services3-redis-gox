@@ -174,7 +174,7 @@
 		
 			
 			
-			<h2 id="RedisCache">type <a href="http://localhost:6060/src/cache/RedisCache.go?s=2208:2500#L55">RedisCache</a>
+			<h2 id="RedisCache">type <a href="http://localhost:6060/src/cache/RedisCache.go?s=2262:2554#L56">RedisCache</a>
 				<a class="permalink" href="index.html#RedisCache">&#xb6;</a>
 				
 				
@@ -211,23 +211,25 @@ References:
 <p>
 Example:
 </p>
-<pre>cache = NewRedisCache[any]();
-cache.Configure(cconf.NewConfigParamsFromTuples(
-  &#34;host&#34;, &#34;localhost&#34;,
-  &#34;port&#34;, 6379,
-));
+<pre>	ctx := context.Background()
 
-err = cache.Open(&#34;123&#34;)
-  ...
+    cache = NewRedisCache[string]();
+    cache.Configure(ctx, cconf.NewConfigParamsFromTuples(
+      &#34;host&#34;, &#34;localhost&#34;,
+      &#34;port&#34;, 6379,
+    ));
 
-ret, err := cache.Store(&#34;123&#34;, &#34;key1&#34;, []byte(&#34;ABC&#34;))
-if err != nil {
-	...
-}
+    err = cache.Open(ctx, &#34;123&#34;)
+      ...
 
-res, err := cache.Retrive(&#34;123&#34;, &#34;key1&#34;)
-value, _ := res.([]byte)
-fmt.Println(string(value))     // Result: &#34;ABC&#34;
+    ret, err := cache.Store(ctx, &#34;123&#34;, &#34;key1&#34;, []byte(&#34;ABC&#34;))
+    if err != nil {
+    	...
+    }
+
+    res, err := cache.Retrieve(ctx, &#34;123&#34;, &#34;key1&#34;)
+    value, _ := res.([]byte)
+    fmt.Println(string(value))     // Result: &#34;ABC&#34;
 </pre>
 
 			<pre>type RedisCache[T <a href="http://localhost:6060/pkg/builtin/#any">any</a>] struct {
@@ -245,7 +247,7 @@ fmt.Println(string(value))     // Result: &#34;ABC&#34;
 
 			
 				
-				<h3 id="NewRedisCache">func <a href="http://localhost:6060/src/cache/RedisCache.go?s=2571:2613#L71">NewRedisCache</a>
+				<h3 id="NewRedisCache">func <a href="http://localhost:6060/src/cache/RedisCache.go?s=2625:2667#L72">NewRedisCache</a>
 					<a class="permalink" href="index.html#NewRedisCache">&#xb6;</a>
 					
 					
@@ -261,7 +263,7 @@ NewRedisCache method are creates a new instance of this cache.
 
 			
 				
-				<h3 id="RedisCache.Close">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=6165:6243#L182">Close</a>
+				<h3 id="RedisCache.Close">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=6219:6297#L183">Close</a>
 					<a class="permalink" href="index.html#RedisCache.Close">&#xb6;</a>
 					
 					
@@ -283,7 +285,7 @@ Retruns: error or nil no errors occured.
 				
 			
 				
-				<h3 id="RedisCache.Configure">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=3139:3221#L86">Configure</a>
+				<h3 id="RedisCache.Configure">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=3193:3275#L87">Configure</a>
 					<a class="permalink" href="index.html#RedisCache.Configure">&#xb6;</a>
 					
 					
@@ -301,7 +303,7 @@ Configure method are configures component by passing configuration parameters.
 				
 			
 				
-				<h3 id="RedisCache.Contains">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=9087:9179#L280">Contains</a>
+				<h3 id="RedisCache.Contains">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=9141:9233#L281">Contains</a>
 					<a class="permalink" href="index.html#RedisCache.Contains">&#xb6;</a>
 					
 					
@@ -321,7 +323,7 @@ Parameters:
 				
 			
 				
-				<h3 id="RedisCache.IsOpen">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=4208:4245#L111">IsOpen</a>
+				<h3 id="RedisCache.IsOpen">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=4262:4299#L112">IsOpen</a>
 					<a class="permalink" href="index.html#RedisCache.IsOpen">&#xb6;</a>
 					
 					
@@ -337,7 +339,7 @@ Returns true if the component has been opened and false otherwise.
 				
 			
 				
-				<h3 id="RedisCache.Open">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=4495:4572#L120">Open</a>
+				<h3 id="RedisCache.Open">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=4549:4626#L121">Open</a>
 					<a class="permalink" href="index.html#RedisCache.Open">&#xb6;</a>
 					
 					
@@ -359,7 +361,7 @@ Returns: error or nil no errors occured.
 				
 			
 				
-				<h3 id="RedisCache.Remove">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=8661:8752#L267">Remove</a>
+				<h3 id="RedisCache.Remove">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=8715:8806#L268">Remove</a>
 					<a class="permalink" href="index.html#RedisCache.Remove">&#xb6;</a>
 					
 					
@@ -382,7 +384,7 @@ Returns: error or nil for success
 				
 			
 				
-				<h3 id="RedisCache.Retrieve">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=6982:7090#L209">Retrieve</a>
+				<h3 id="RedisCache.Retrieve">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=7036:7144#L210">Retrieve</a>
 					<a class="permalink" href="index.html#RedisCache.Retrieve">&#xb6;</a>
 					
 					
@@ -404,7 +406,7 @@ Retruns: cached value or error.
 				
 			
 				
-				<h3 id="RedisCache.SetReferences">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=3852:3939#L103">SetReferences</a>
+				<h3 id="RedisCache.SetReferences">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=3906:3993#L104">SetReferences</a>
 					<a class="permalink" href="index.html#RedisCache.SetReferences">&#xb6;</a>
 					
 					
@@ -422,7 +424,7 @@ Sets references to dependent components.
 				
 			
 				
-				<h3 id="RedisCache.Store">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=7935:8065#L244">Store</a>
+				<h3 id="RedisCache.Store">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=7989:8119#L245">Store</a>
 					<a class="permalink" href="index.html#RedisCache.Store">&#xb6;</a>
 					
 					

@@ -40,21 +40,22 @@ References:
 - *:credential-store:*:*:1.0 (optional) Credential stores to resolve credential
 
 Example:
+	ctx := context.Background()
 
     lock = NewRedisRedis();
-    lock.Configure(cconf.NewConfigParamsFromTuples(
+    lock.Configure(ctx, cconf.NewConfigParamsFromTuples(
       "host", "localhost",
       "port", 6379,
     ));
 
-    err = lock.Open("123")
+    err = lock.Open(ctx, "123")
       ...
 
-    result, err := lock.TryAcquireLock("123", "key1", 3000)
+    result, err := lock.TryAcquireLock(ctx, "123", "key1", 3000)
     if result {
     	// Processing...
     }
-    err = lock.ReleaseLock("123", "key1")
+    err = lock.ReleaseLock(ctx, "123", "key1")
     // Continue...
 */
 type RedisLock struct {
