@@ -1,17 +1,18 @@
 package lock
 
 import (
+	"context"
 	"strconv"
 	"time"
 
 	"github.com/gomodule/redigo/redis"
-	cconf "github.com/pip-services3-go/pip-services3-commons-go/config"
-	cdata "github.com/pip-services3-go/pip-services3-commons-go/data"
-	cerr "github.com/pip-services3-go/pip-services3-commons-go/errors"
-	cref "github.com/pip-services3-go/pip-services3-commons-go/refer"
-	cauth "github.com/pip-services3-go/pip-services3-components-go/auth"
-	ccon "github.com/pip-services3-go/pip-services3-components-go/connect"
-	clock "github.com/pip-services3-go/pip-services3-components-go/lock"
+	cconf "github.com/pip-services3-gox/pip-services3-commons-gox/config"
+	cdata "github.com/pip-services3-gox/pip-services3-commons-gox/data"
+	cerr "github.com/pip-services3-gox/pip-services3-commons-gox/errors"
+	cref "github.com/pip-services3-gox/pip-services3-commons-gox/refer"
+	cauth "github.com/pip-services3-gox/pip-services3-components-gox/auth"
+	ccon "github.com/pip-services3-gox/pip-services3-components-gox/connect"
+	clock "github.com/pip-services3-gox/pip-services3-components-gox/lock"
 )
 
 /*
@@ -63,8 +64,8 @@ type RedisLock struct {
 
 	lockId  string
 	timeout int
-	//retries int
-	dbNum int
+	retries int
+	dbNum   int
 
 	client redis.Conn
 }
@@ -76,9 +77,9 @@ func NewRedisLock() *RedisLock {
 		credentialResolver: cauth.NewEmptyCredentialResolver(),
 		lockId:             cdata.IdGenerator.NextLong(),
 		timeout:            30000,
-		//retries : 3,
-		dbNum:  0,
-		client: nil,
+		retries:            3,
+		dbNum:              0,
+		client:             nil,
 	}
 	c.Lock = clock.InheritLock(c)
 	return c
@@ -87,12 +88,12 @@ func NewRedisLock() *RedisLock {
 // Configure method are configures component by passing configuration parameters.
 // Parameters:
 //   - config    configuration parameters to be set.
-func (c *RedisLock) Configure(config *cconf.ConfigParams) {
-	c.connectionResolver.Configure(config)
-	c.credentialResolver.Configure(config)
+func (c *RedisLock) Configure(ctx context.Context, config *cconf.ConfigParams) {
+	c.connectionResolver.Configure(ctx, config)
+	c.credentialResolver.Configure(ctx, config)
 
 	c.timeout = config.GetAsIntegerWithDefault("options.timeout", c.timeout)
-	//c.retries = config.GetAsIntegerWithDefault("options.retries", c.retries)
+	c.retries = config.GetAsIntegerWithDefault("options.retries", c.retries)
 	c.dbNum = config.GetAsIntegerWithDefault("options.db_num", c.dbNum)
 	if c.dbNum > 15 || c.dbNum < 0 {
 		c.dbNum = 0
@@ -101,10 +102,11 @@ func (c *RedisLock) Configure(config *cconf.ConfigParams) {
 
 // SetReferences method are sets references to dependent components.
 // Parameters:
+//   - ctx context.Context
 //   - references 	references to locate the component dependencies.
-func (c *RedisLock) SetReferences(references cref.IReferences) {
-	c.connectionResolver.SetReferences(references)
-	c.credentialResolver.SetReferences(references)
+func (c *RedisLock) SetReferences(ctx context.Context, references cref.IReferences) {
+	c.connectionResolver.SetReferences(ctx, references)
+	c.credentialResolver.SetReferences(ctx, references)
 }
 
 // IsOpen method are checks if the component is opened.
@@ -115,9 +117,10 @@ func (c *RedisLock) IsOpen() bool {
 
 // Open method are opens the component.
 // Parameters:
+//  - ctx context.Context
 // 	- correlationId 	(optional) transaction id to trace execution through call chain.
 // Returns: error or nil no errors occured.
-func (c *RedisLock) Open(correlationId string) error {
+func (c *RedisLock) Open(ctx context.Context, correlationId string) error {
 	var connection *ccon.ConnectionParams
 	var credential *cauth.CredentialParams
 
@@ -128,7 +131,7 @@ func (c *RedisLock) Open(correlationId string) error {
 		return err
 	}
 
-	credential, err = c.credentialResolver.Lookup(correlationId)
+	credential, err = c.credentialResolver.Lookup(ctx, correlationId)
 	if err != nil {
 		return err
 	}
@@ -164,9 +167,10 @@ func (c *RedisLock) Open(correlationId string) error {
 
 // Close method are closes component and frees used resources.
 // Parameters:
+//  - ctx context.Context
 //  - correlationId 	(optional) transaction id to trace execution through call chain.
 // Retruns: error or nil no errors occured.
-func (c *RedisLock) Close(correlationId string) error {
+func (c *RedisLock) Close(ctx context.Context, correlationId string) error {
 	if c.client != nil {
 		err := c.client.Close()
 		c.client = nil
@@ -189,11 +193,12 @@ func (c *RedisLock) checkOpened(correlationId string) (state bool, err error) {
 // TryAcquireLock method are makes a single attempt to acquire a lock by its key.
 // It returns immediately a positive or negative result.
 // Parameters:
+//  - ctx context.Context
 //  - correlationId     (optional) transaction id to trace execution through call chain.
 //  - key               a unique lock key to acquire.
 //  - ttl               a lock timeout (time to live) in milliseconds.
 // Returns: a lock result or error.
-func (c *RedisLock) TryAcquireLock(correlationId string, key string, ttl int64) (result bool, err error) {
+func (c *RedisLock) TryAcquireLock(ctx context.Context, correlationId string, key string, ttl int64) (result bool, err error) {
 	state, err := c.checkOpened(correlationId)
 	if !state {
 		return false, err
@@ -207,10 +212,11 @@ func (c *RedisLock) TryAcquireLock(correlationId string, key string, ttl int64) 
 }
 
 // ReleaseLock method are releases prevously acquired lock by its key.
+//  - ctx context.Context
 //  - correlationId     (optional) transaction id to trace execution through call chain.
 //  - key               a unique lock key to release.
 // Returns: error or nil for success.
-func (c *RedisLock) ReleaseLock(correlationId string, key string) error {
+func (c *RedisLock) ReleaseLock(ctx context.Context, correlationId string, key string) error {
 	state, err := c.checkOpened(correlationId)
 	if !state {
 		return err

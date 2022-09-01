@@ -1,7 +1,7 @@
 package redis
 
 import (
-	_ "github.com/pip-services3-go/pip-services3-redis-go/build"
-	_ "github.com/pip-services3-go/pip-services3-redis-go/lock"
-	_ "github.com/pip-services3-go/pip-services3-redis-go/cache"
+	_ "github.com/pip-services3-gox/pip-services3-redis-gox/build"
+	_ "github.com/pip-services3-gox/pip-services3-redis-gox/cache"
+	_ "github.com/pip-services3-gox/pip-services3-redis-gox/lock"
 )

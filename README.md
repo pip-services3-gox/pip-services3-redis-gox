@@ -6,14 +6,14 @@ The module for working with a Redis database of type key-value contains componen
 
 The module contains the following packages:
 
-- [**Build**](https://godoc.org/github.com/pip-services3-go/pip-services3-redis-go/build) - factory default
-- [**Cache**](https://godoc.org/github.com/pip-services3-go/pip-services3-redis-go/cache) - Redis Cache Components
-- [**Lock**](https://godoc.org/github.com/pip-services3-go/pip-services3-redis-go/lock) - components of working with locks in Redis
+- [**Build**](https://godoc.org/github.com/pip-services3-gox/pip-services3-redis-gox/build) - factory default
+- [**Cache**](https://godoc.org/github.com/pip-services3-gox/pip-services3-redis-gox/cache) - Redis Cache Components
+- [**Lock**](https://godoc.org/github.com/pip-services3-gox/pip-services3-redis-gox/lock) - components of working with locks in Redis
 
 <a name="links"></a> Quick links:
 
 * [Configuration](https://www.pipservices.org/recipies/configuration)
-* [API Reference](https://godoc.org/github.com/pip-services3-go/pip-services3-redis-go/)
+* [API Reference](https://godoc.org/github.com/pip-services3-gox/pip-services3-redis-gox/)
 * [Change Log](CHANGELOG.md)
 * [Get Help](https://www.pipservices.org/community/help)
 * [Contribute](https://www.pipservices.org/community/contribute)
@@ -22,13 +22,13 @@ The module contains the following packages:
 
 Get the package from the Github repository:
 ```bash
-go get -u github.com/pip-services3-go/pip-services3-redis-go@latest
+go get -u github.com/pip-services3-gox/pip-services3-redis-gox@latest
 ```
 
 ## Develop
 
 For development you shall install the following prerequisites:
-* Golang v1.12+
+* Golang v1.18+
 * Visual Studio Code or another IDE of your choice
 * Docker
 * Git
@@ -51,7 +51,7 @@ Before committing changes run dockerized test as:
 
 ## Contacts
 
-The library is created and maintained by **Sergey Seroukhov** and **Levichev Dmitry**.
+The library is created and maintained by **Sergey Seroukhov**, **Levichev Dmitry** and **Danil Prisiazhnyi**.
 
 The documentation is written by:
 - **Levichev Dmitry**

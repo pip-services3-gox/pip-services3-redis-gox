@@ -1,10 +1,10 @@
 package build
 
 import (
-	cref "github.com/pip-services3-go/pip-services3-commons-go/refer"
-	cbuild "github.com/pip-services3-go/pip-services3-components-go/build"
-	rediscache "github.com/pip-services3-go/pip-services3-redis-go/cache"
-	redislock "github.com/pip-services3-go/pip-services3-redis-go/lock"
+	cref "github.com/pip-services3-gox/pip-services3-commons-gox/refer"
+	cbuild "github.com/pip-services3-gox/pip-services3-components-gox/build"
+	rediscache "github.com/pip-services3-gox/pip-services3-redis-gox/cache"
+	redislock "github.com/pip-services3-gox/pip-services3-redis-gox/lock"
 )
 
 /*
@@ -28,7 +28,7 @@ func NewDefaultRedisFactory() *DefaultRedisFactory {
 	c.Descriptor = cref.NewDescriptor("pip-services", "factory", "redis", "default", "1.0")
 	c.RedisCacheDescriptor = cref.NewDescriptor("pip-services", "cache", "redis", "*", "1.0")
 	c.RedisLockDescriptor = cref.NewDescriptor("pip-services", "lock", "redis", "*", "1.0")
-	c.RegisterType(c.RedisCacheDescriptor, rediscache.NewRedisCache)
+	c.RegisterType(c.RedisCacheDescriptor, rediscache.NewRedisCache[any])
 	c.RegisterType(c.RedisLockDescriptor, redislock.NewRedisLock)
 	return &c
 }

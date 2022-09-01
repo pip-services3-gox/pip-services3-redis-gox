@@ -1,17 +1,19 @@
 package persistence
 
 import (
-	"encoding/json"
-	"math/rand"
+	"context"
 
-	"github.com/go-redis/redis"
-	cconf "github.com/pip-services3-go/pip-services3-commons-go/config"
-	cerr "github.com/pip-services3-go/pip-services3-commons-go/errors"
-	cref "github.com/pip-services3-go/pip-services3-commons-go/refer"
-	cauth "github.com/pip-services3-go/pip-services3-components-go/auth"
-	ccon "github.com/pip-services3-go/pip-services3-components-go/connect"
 	"strconv"
 	"time"
+
+	"github.com/go-redis/redis"
+	cconf "github.com/pip-services3-gox/pip-services3-commons-gox/config"
+	cconv "github.com/pip-services3-gox/pip-services3-commons-gox/convert"
+	cerr "github.com/pip-services3-gox/pip-services3-commons-gox/errors"
+	cref "github.com/pip-services3-gox/pip-services3-commons-gox/refer"
+	cauth "github.com/pip-services3-gox/pip-services3-components-gox/auth"
+	ccon "github.com/pip-services3-gox/pip-services3-components-gox/connect"
+	clog "github.com/pip-services3-gox/pip-services3-components-gox/log"
 )
 
 /*
@@ -42,7 +44,7 @@ References:
 
 Example:
 
-    cache = NewRedisCache();
+    cache = NewRedisCache[any]();
     cache.Configure(cconf.NewConfigParamsFromTuples(
       "host", "localhost",
       "port", 6379,
@@ -60,37 +62,44 @@ Example:
     value, _ := res.([]byte)
     fmt.Println(string(value))     // Result: "ABC"
 */
-type RedisCache struct {
+type RedisCache[T any] struct {
 	connectionResolver *ccon.ConnectionResolver
 	credentialResolver *cauth.CredentialResolver
 
-	timeout int
-	//retries int
+	timeout   int
+	retries   int
 	dbNum     int
 	isCluster bool
 
 	client redis.UniversalClient
+	logger clog.CompositeLogger
+
+	convertor cconv.IJSONEngine[T]
 }
 
 // NewRedisCache method are creates a new instance of this cache.
-func NewRedisCache() *RedisCache {
-	c := RedisCache{}
-	c.connectionResolver = ccon.NewEmptyConnectionResolver()
-	c.credentialResolver = cauth.NewEmptyCredentialResolver()
-	c.timeout = 30000
-	//c.retries = 3
-	c.dbNum = 0
-	return &c
+func NewRedisCache[T any]() *RedisCache[T] {
+	return &RedisCache[T]{
+		logger:             *clog.NewCompositeLogger(),
+		connectionResolver: ccon.NewEmptyConnectionResolver(),
+		credentialResolver: cauth.NewEmptyCredentialResolver(),
+		timeout:            30000,
+		retries:            30000,
+		dbNum:              3,
+		convertor:          cconv.NewDefaultCustomTypeJsonConvertor[T](),
+	}
 }
 
 // Configure method are configures component by passing configuration parameters.
+// 	 - ctx context.Context
 //   - config    configuration parameters to be set.
-func (c *RedisCache) Configure(config *cconf.ConfigParams) {
-	c.connectionResolver.Configure(config)
-	c.credentialResolver.Configure(config)
+func (c *RedisCache[T]) Configure(ctx context.Context, config *cconf.ConfigParams) {
+	c.connectionResolver.Configure(ctx, config)
+	c.credentialResolver.Configure(ctx, config)
+	c.logger.Configure(ctx, config)
 
 	c.timeout = config.GetAsIntegerWithDefault("options.timeout", c.timeout)
-	//c.retries = config.GetAsIntegerWithDefault("options.retries", c.retries)
+	c.retries = config.GetAsIntegerWithDefault("options.retries", c.retries)
 	c.dbNum = config.GetAsIntegerWithDefault("options.db_num", c.dbNum)
 	if c.dbNum > 15 || c.dbNum < 0 {
 		c.dbNum = 0
@@ -99,23 +108,26 @@ func (c *RedisCache) Configure(config *cconf.ConfigParams) {
 }
 
 // Sets references to dependent components.
+//	 - ctx context.Context
 //   - references 	references to locate the component dependencies.
-func (c *RedisCache) SetReferences(references cref.IReferences) {
-	c.connectionResolver.SetReferences(references)
-	c.credentialResolver.SetReferences(references)
+func (c *RedisCache[T]) SetReferences(ctx context.Context, references cref.IReferences) {
+	c.connectionResolver.SetReferences(ctx, references)
+	c.credentialResolver.SetReferences(ctx, references)
+	c.logger.SetReferences(ctx, references)
 }
 
 // Checks if the component is opened.
 // Returns true if the component has been opened and false otherwise.
-func (c *RedisCache) IsOpen() bool {
+func (c *RedisCache[T]) IsOpen() bool {
 	return c.client != nil
 }
 
 // Open method are opens the component.
 // Parameters:
+//  - ctx context.Context
 //  - correlationId 	(optional) transaction id to trace execution through call chain.
 // Returns: error or nil no errors occured.
-func (c *RedisCache) Open(correlationId string) error {
+func (c *RedisCache[T]) Open(ctx context.Context, correlationId string) error {
 	var (
 		connection *ccon.ConnectionParams
 		credential *cauth.CredentialParams
@@ -129,12 +141,15 @@ func (c *RedisCache) Open(correlationId string) error {
 		return err
 	}
 
-	credential, err = c.credentialResolver.Lookup(correlationId)
+	credential, err = c.credentialResolver.Lookup(ctx, correlationId)
+
 	if err != nil {
 		return err
 	}
-	options.DialTimeout = time.Duration(rand.Intn(c.timeout)) * time.Millisecond
+
+	options.DialTimeout = time.Duration(c.timeout) * time.Millisecond
 	options.DB = c.dbNum
+	options.MaxRetries = c.retries
 
 	if credential != nil {
 		options.Password = credential.Password()
@@ -171,9 +186,10 @@ func (c *RedisCache) Open(correlationId string) error {
 
 // Close method are closes component and frees used resources.
 // Parameters:
+//   - ctx context.Context
 //   - correlationId 	(optional) transaction id to trace execution through call chain.
 // Retruns: error or nil no errors occured.
-func (c *RedisCache) Close(correlationId string) error {
+func (c *RedisCache[T]) Close(ctx context.Context, correlationId string) error {
 	if c.client != nil {
 		err := c.client.Close()
 		c.client = nil
@@ -184,7 +200,7 @@ func (c *RedisCache) Close(correlationId string) error {
 	return nil
 }
 
-func (c *RedisCache) checkOpened(correlationId string) (state bool, err error) {
+func (c *RedisCache[T]) checkOpened(correlationId string) (state bool, err error) {
 	if !c.IsOpen() {
 		err = cerr.NewInvalidStateError(correlationId, "NOT_OPENED", "Connection is not opened")
 		return false, err
@@ -196,91 +212,86 @@ func (c *RedisCache) checkOpened(correlationId string) (state bool, err error) {
 // Retrieve method are retrieves cached value from the cache using its key.
 // If value is missing in the cache or expired it returns nil.
 // Parameters:
+//   - ctx context.Context
 //   - correlationId     (optional) transaction id to trace execution through call chain.
 //   - key               a unique value key.
 //  Retruns: cached value or error.
-func (c *RedisCache) Retrieve(correlationId string, key string) (value interface{}, err error) {
-	state, err := c.checkOpened(correlationId)
-	if !state {
-		return nil, err
+func (c *RedisCache[T]) Retrieve(ctx context.Context, correlationId string, key string) (value T, err error) {
+	var defaultValue T
+
+	if state, err := c.checkOpened(correlationId); !state {
+		return defaultValue, err
 	}
+
 	item, err := c.client.Get(key).Bytes()
+
 	if err != nil {
 		if err == redis.Nil {
-			return nil, nil
+			return defaultValue, nil
 		}
-		return nil, err
+		return defaultValue, err
 	}
+
 	if item != nil {
-		var val interface{}
-		err = json.Unmarshal(item, &val)
+		val, err := c.convertor.FromJson(string(item))
 		if err != nil {
-			return nil, err
+			return defaultValue, err
 		}
 		return val, nil
 	}
-	return nil, nil
-}
 
-// Retrive cached value from the cache using its key and restore into reference object. If value is missing in the cache or expired it returns false.
-// Parameters:
-//   - correlationId string
-//   transaction id to trace execution through call chain.
-//   - key string   a unique value key.
-//   - refObj       pointer to object for restore
-// Returns bool, error
-func (c *RedisCache) RetrieveAs(correlationId string, key string, refObj interface{}) (interface{}, error) {
-	state, err := c.checkOpened(correlationId)
-	if !state {
-		return nil, err
-	}
-	item, err := c.client.Get(key).Bytes()
-	if err != nil {
-		if err == redis.Nil {
-			return nil, nil
-		}
-		return nil, err
-	}
-	if item != nil {
-		err = json.Unmarshal(item, refObj)
-		if err != nil {
-			return nil, err
-		}
-		return refObj, nil
-	}
-	return nil, nil
+	return defaultValue, nil
 }
 
 // Store method are stores value in the cache with expiration time.
 // Parameters:
+//   - ctx context.Context
 //   - correlationId     (optional) transaction id to trace execution through call chain.
 //   - key               a unique value key.
 //   - value             a value to store.
 //   - timeout           expiration timeout in milliseconds.
 // Retruns error or nil for success
-func (c *RedisCache) Store(correlationId string, key string, value interface{}, timeout int64) (result interface{}, err error) {
+func (c *RedisCache[T]) Store(ctx context.Context, correlationId string, key string, value T, timeout int64) (result T, err error) {
 	state, err := c.checkOpened(correlationId)
+
+	var defaultValue T
+
 	if !state {
-		return nil, err
+		return defaultValue, err
 	}
 
-	jsonVal, err := json.Marshal(value)
+	jsonVal, err := c.convertor.ToJson(value)
 	if err != nil {
-		return nil, err
+		return defaultValue, err
 	}
-	tmout := time.Duration(rand.Int63n(timeout)) * time.Millisecond
+	tmout := time.Duration(timeout) * time.Millisecond
 	return value, c.client.Set(key, jsonVal, tmout).Err()
 }
 
 // Removes a value from the cache by its key.
 // Parameters:
+//   - ctx context.Context
 //   - correlationId     (optional) transaction id to trace execution through call chain.
 //   - key               a unique value key.
 // Returns: error or nil for success
-func (c *RedisCache) Remove(correlationId string, key string) error {
+func (c *RedisCache[T]) Remove(ctx context.Context, correlationId string, key string) error {
 	state, err := c.checkOpened(correlationId)
 	if !state {
 		return err
 	}
 	return c.client.Del(key).Err()
+}
+
+// Contains check is value stores
+// Parameters:
+//   - ctx context.Context
+//   - correlationId     (optional) transaction id to trace execution through call chain.
+//   - key               a unique value key.
+func (c *RedisCache[T]) Contains(ctx context.Context, correlationId string, key string) bool {
+	state, err := c.checkOpened(correlationId)
+	if !state {
+		c.logger.Error(ctx, correlationId, err, "Connection is not opened")
+		return false
+	}
+	return c.client.Exists(key).Val() > 0
 }
