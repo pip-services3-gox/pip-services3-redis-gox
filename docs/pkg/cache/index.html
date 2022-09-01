@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#375EAB">
 
-  <title>cache - Go Documentation Server</title>
+  <title>persistence - Go Documentation Server</title>
 
 <link type="text/css" rel="stylesheet" href="../../lib/godoc/style.css">
 
@@ -14,7 +14,7 @@
 
 
 
-<script>var goVersion = "go1.13.15";</script>
+<script>var goVersion = "go1.18.5";</script>
 <script src="../../lib/godoc/godocs.js" defer></script>
 </head>
 <body>
@@ -43,7 +43,7 @@
 
 
   <h1>
-    Package cache
+    Package persistence
     <span class="text-muted"></span>
   </h1>
 
@@ -116,32 +116,35 @@
 				<dd><a href="index.html#RedisCache">type RedisCache</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#NewRedisCache">func NewRedisCache() *RedisCache</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#NewRedisCache">func NewRedisCache[T any]() *RedisCache[T]</a></dd>
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Close">func (c *RedisCache) Close(correlationId string) error</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Close">func (c *RedisCache[T]) Close(ctx context.Context, correlationId string) error</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Configure">func (c *RedisCache) Configure(config *cconf.ConfigParams)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Configure">func (c *RedisCache[T]) Configure(ctx context.Context, config *cconf.ConfigParams)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.IsOpen">func (c *RedisCache) IsOpen() bool</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Contains">func (c *RedisCache[T]) Contains(ctx context.Context, correlationId string, key string) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Open">func (c *RedisCache) Open(correlationId string) error</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.IsOpen">func (c *RedisCache[T]) IsOpen() bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Remove">func (c *RedisCache) Remove(correlationId string, key string) error</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Open">func (c *RedisCache[T]) Open(ctx context.Context, correlationId string) error</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Retrieve">func (c *RedisCache) Retrieve(correlationId string, key string) (value interface{}, err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Remove">func (c *RedisCache[T]) Remove(ctx context.Context, correlationId string, key string) error</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.SetReferences">func (c *RedisCache) SetReferences(references cref.IReferences)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Retrieve">func (c *RedisCache[T]) Retrieve(ctx context.Context, correlationId string, key string) (value T, err error)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Store">func (c *RedisCache) Store(correlationId string, key string, value interface{}, timeout int64) (result interface{}, err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.SetReferences">func (c *RedisCache[T]) SetReferences(ctx context.Context, references cref.IReferences)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#RedisCache.Store">func (c *RedisCache[T]) Store(ctx context.Context, correlationId string, key string, value T, timeout int64) (result T, err error)</a></dd>
 				
 			
 			
@@ -171,7 +174,7 @@
 		
 			
 			
-			<h2 id="RedisCache">type <a href="http://localhost:6060/src/cache/RedisCache.go?s=1932:2109#L51">RedisCache</a>
+			<h2 id="RedisCache">type <a href="http://localhost:6060/src/cache/RedisCache.go?s=2208:2500#L55">RedisCache</a>
 				<a class="permalink" href="index.html#RedisCache">&#xb6;</a>
 				
 				
@@ -195,7 +198,8 @@ Configuration parameters:
   - retries:               number of retries (default: 3)
   - timeout:               default caching timeout in milliseconds (default: 1 minute)
   - db_num:                database number in Redis  (default 0)
-  - max_size:            maximum number of values stored in this cache (default: 1000)
+  - max_size:            	 maximum number of values stored in this cache (default: 1000)
+  - cluster:            	 enable redis cluster
 </pre>
 <p>
 References:
@@ -207,7 +211,7 @@ References:
 <p>
 Example:
 </p>
-<pre>cache = NewRedisCache();
+<pre>cache = NewRedisCache[any]();
 cache.Configure(cconf.NewConfigParamsFromTuples(
   &#34;host&#34;, &#34;localhost&#34;,
   &#34;port&#34;, 6379,
@@ -226,7 +230,7 @@ value, _ := res.([]byte)
 fmt.Println(string(value))     // Result: &#34;ABC&#34;
 </pre>
 
-			<pre>type RedisCache struct {
+			<pre>type RedisCache[T <a href="http://localhost:6060/pkg/builtin/#any">any</a>] struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }
 </pre>
@@ -241,12 +245,12 @@ fmt.Println(string(value))     // Result: &#34;ABC&#34;
 
 			
 				
-				<h3 id="NewRedisCache">func <a href="http://localhost:6060/src/cache/RedisCache.go?s=2177:2209#L63">NewRedisCache</a>
+				<h3 id="NewRedisCache">func <a href="http://localhost:6060/src/cache/RedisCache.go?s=2571:2613#L71">NewRedisCache</a>
 					<a class="permalink" href="index.html#NewRedisCache">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func NewRedisCache() *<a href="index.html#RedisCache">RedisCache</a></pre>
+				<pre>func NewRedisCache[T <a href="http://localhost:6060/pkg/builtin/#any">any</a>]() *<a href="index.html#RedisCache">RedisCache</a>[T]</pre>
 				<p>
 NewRedisCache method are creates a new instance of this cache.
 </p>
@@ -257,17 +261,18 @@ NewRedisCache method are creates a new instance of this cache.
 
 			
 				
-				<h3 id="RedisCache.Close">func (*RedisCache) <a href="http://localhost:6060/src/cache/RedisCache.go?s=5010:5064#L153">Close</a>
+				<h3 id="RedisCache.Close">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=6165:6243#L182">Close</a>
 					<a class="permalink" href="index.html#RedisCache.Close">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>) Close(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>[T]) Close(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
 				<p>
 Close method are closes component and frees used resources.
 Parameters:
 </p>
-<pre>- correlationId 	(optional) transaction id to trace execution through call chain.
+<pre>- ctx context.Context
+- correlationId 	(optional) transaction id to trace execution through call chain.
 </pre>
 <p>
 Retruns: error or nil no errors occured.
@@ -278,16 +283,17 @@ Retruns: error or nil no errors occured.
 				
 			
 				
-				<h3 id="RedisCache.Configure">func (*RedisCache) <a href="http://localhost:6060/src/cache/RedisCache.go?s=2546:2604#L75">Configure</a>
+				<h3 id="RedisCache.Configure">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=3139:3221#L86">Configure</a>
 					<a class="permalink" href="index.html#RedisCache.Configure">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>) Configure(config *<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/config/">cconf</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/config/#ConfigParams">ConfigParams</a>)</pre>
+				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>[T]) Configure(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, config *<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/config/">cconf</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/config/#ConfigParams">ConfigParams</a>)</pre>
 				<p>
 Configure method are configures component by passing configuration parameters.
 </p>
-<pre>- config    configuration parameters to be set.
+<pre>	 - ctx context.Context
+  - config    configuration parameters to be set.
 </pre>
 
 				
@@ -295,12 +301,32 @@ Configure method are configures component by passing configuration parameters.
 				
 			
 				
-				<h3 id="RedisCache.IsOpen">func (*RedisCache) <a href="http://localhost:6060/src/cache/RedisCache.go?s=3346:3380#L96">IsOpen</a>
+				<h3 id="RedisCache.Contains">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=9087:9179#L280">Contains</a>
+					<a class="permalink" href="index.html#RedisCache.Contains">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>[T]) Contains(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#bool">bool</a></pre>
+				<p>
+Contains check is value stores
+Parameters:
+</p>
+<pre>- ctx context.Context
+- correlationId     (optional) transaction id to trace execution through call chain.
+- key               a unique value key.
+</pre>
+
+				
+				
+				
+			
+				
+				<h3 id="RedisCache.IsOpen">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=4208:4245#L111">IsOpen</a>
 					<a class="permalink" href="index.html#RedisCache.IsOpen">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>) IsOpen() <a href="http://localhost:6060/pkg/builtin/#bool">bool</a></pre>
+				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>[T]) IsOpen() <a href="http://localhost:6060/pkg/builtin/#bool">bool</a></pre>
 				<p>
 Checks if the component is opened.
 Returns true if the component has been opened and false otherwise.
@@ -311,17 +337,18 @@ Returns true if the component has been opened and false otherwise.
 				
 			
 				
-				<h3 id="RedisCache.Open">func (*RedisCache) <a href="http://localhost:6060/src/cache/RedisCache.go?s=3595:3648#L104">Open</a>
+				<h3 id="RedisCache.Open">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=4495:4572#L120">Open</a>
 					<a class="permalink" href="index.html#RedisCache.Open">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>) Open(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>[T]) Open(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
 				<p>
 Open method are opens the component.
 Parameters:
 </p>
-<pre>- correlationId 	(optional) transaction id to trace execution through call chain.
+<pre>- ctx context.Context
+- correlationId 	(optional) transaction id to trace execution through call chain.
 </pre>
 <p>
 Returns: error or nil no errors occured.
@@ -332,17 +359,18 @@ Returns: error or nil no errors occured.
 				
 			
 				
-				<h3 id="RedisCache.Remove">func (*RedisCache) <a href="http://localhost:6060/src/cache/RedisCache.go?s=6812:6879#L208">Remove</a>
+				<h3 id="RedisCache.Remove">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=8661:8752#L267">Remove</a>
 					<a class="permalink" href="index.html#RedisCache.Remove">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>) Remove(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>[T]) Remove(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
 				<p>
 Removes a value from the cache by its key.
 Parameters:
 </p>
-<pre>- correlationId     (optional) transaction id to trace execution through call chain.
+<pre>- ctx context.Context
+- correlationId     (optional) transaction id to trace execution through call chain.
 - key               a unique value key.
 </pre>
 <p>
@@ -354,18 +382,19 @@ Returns: error or nil for success
 				
 			
 				
-				<h3 id="RedisCache.Retrieve">func (*RedisCache) <a href="http://localhost:6060/src/cache/RedisCache.go?s=5746:5840#L179">Retrieve</a>
+				<h3 id="RedisCache.Retrieve">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=6982:7090#L209">Retrieve</a>
 					<a class="permalink" href="index.html#RedisCache.Retrieve">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>) Retrieve(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>) (value interface{}, err <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
+				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>[T]) Retrieve(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>) (value T, err <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
 				<p>
 Retrieve method are retrieves cached value from the cache using its key.
 If value is missing in the cache or expired it returns nil.
 Parameters:
 </p>
-<pre> - correlationId     (optional) transaction id to trace execution through call chain.
+<pre> - ctx context.Context
+ - correlationId     (optional) transaction id to trace execution through call chain.
  - key               a unique value key.
 Retruns: cached value or error.
 </pre>
@@ -375,16 +404,17 @@ Retruns: cached value or error.
 				
 			
 				
-				<h3 id="RedisCache.SetReferences">func (*RedisCache) <a href="http://localhost:6060/src/cache/RedisCache.go?s=3073:3136#L89">SetReferences</a>
+				<h3 id="RedisCache.SetReferences">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=3852:3939#L103">SetReferences</a>
 					<a class="permalink" href="index.html#RedisCache.SetReferences">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>) SetReferences(references <a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/refer/">cref</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/refer/#IReferences">IReferences</a>)</pre>
+				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>[T]) SetReferences(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, references <a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/refer/">cref</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/refer/#IReferences">IReferences</a>)</pre>
 				<p>
 Sets references to dependent components.
 </p>
-<pre>- references 	references to locate the component dependencies.
+<pre>	 - ctx context.Context
+  - references 	references to locate the component dependencies.
 </pre>
 
 				
@@ -392,17 +422,18 @@ Sets references to dependent components.
 				
 			
 				
-				<h3 id="RedisCache.Store">func (*RedisCache) <a href="http://localhost:6060/src/cache/RedisCache.go?s=6314:6440#L194">Store</a>
+				<h3 id="RedisCache.Store">func (*RedisCache[T]) <a href="http://localhost:6060/src/cache/RedisCache.go?s=7935:8065#L244">Store</a>
 					<a class="permalink" href="index.html#RedisCache.Store">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>) Store(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>, value interface{}, timeout <a href="http://localhost:6060/pkg/builtin/#int64">int64</a>) (result interface{}, err <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
+				<pre>func (c *<a href="index.html#RedisCache">RedisCache</a>[T]) Store(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>, value T, timeout <a href="http://localhost:6060/pkg/builtin/#int64">int64</a>) (result T, err <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
 				<p>
 Store method are stores value in the cache with expiration time.
 Parameters:
 </p>
-<pre>- correlationId     (optional) transaction id to trace execution through call chain.
+<pre>- ctx context.Context
+- correlationId     (optional) transaction id to trace execution through call chain.
 - key               a unique value key.
 - value             a value to store.
 - timeout           expiration timeout in milliseconds.
@@ -427,13 +458,13 @@ Retruns error or nil for success
 
 
 <div id="footer">
-Build version go1.13.15.<br>
+Build version go1.18.5.<br>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,
 and code is licensed under a <a href="http://localhost:6060/LICENSE">BSD license</a>.<br>
-<a href="http://localhost:6060/doc/tos.html">Terms of Service</a> |
-<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+<a href="https://golang.org/doc/tos.html">Terms of Service</a> |
+<a href="https://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
 </div>
 
 </div><!-- .container -->

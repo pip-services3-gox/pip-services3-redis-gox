@@ -14,7 +14,7 @@
 
 
 
-<script>var goVersion = "go1.13.15";</script>
+<script>var goVersion = "go1.18.5";</script>
 <script src="../../../lib/godoc/godocs.js" defer></script>
 </head>
 <body>
@@ -112,13 +112,15 @@
 				<dd><a href="index.html#pkg-constants">Constants</a></dd>
 			
 			
+				<dd><a href="index.html#pkg-variables">Variables</a></dd>
+			
 			
 			
 				
 				<dd><a href="index.html#CacheFixture">type CacheFixture</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#NewCacheFixture">func NewCacheFixture(cache ccache.ICache) *CacheFixture</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#NewCacheFixture">func NewCacheFixture(cache ccache.ICache[any]) *CacheFixture</a></dd>
 				
 				
 					
@@ -176,14 +178,6 @@
 			
 				
 				<pre>const (
-    <span id="KEY1">KEY1</span>   <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;key1&#34;
-    <span id="KEY2">KEY2</span>   <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;key2&#34;
-    <span id="VALUE1">VALUE1</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;value1&#34;
-    <span id="VALUE2">VALUE2</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;value2&#34;
-)</pre>
-			
-				
-				<pre>const (
     <span id="LOCK1">LOCK1</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;lock_1&#34;
     <span id="LOCK2">LOCK2</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;lock_2&#34;
     <span id="LOCK3">LOCK3</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;lock_3&#34;
@@ -191,11 +185,31 @@
 			
 		
 		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				
+				<pre>var (
+    <span id="KEY1">KEY1</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;key1&#34;
+    <span id="KEY2">KEY2</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;key2&#34;
+    <span id="KEY3">KEY3</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;key3&#34;
+    <span id="KEY4">KEY4</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;key4&#34;
+    <span id="KEY5">KEY5</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;key5&#34;
+    <span id="KEY6">KEY6</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a> = &#34;key6&#34;
+
+    <span id="VALUE1">VALUE1</span> <a href="http://localhost:6060/pkg/builtin/#string">string</a>                 = &#34;value1&#34;
+    <span id="VALUE2">VALUE2</span> map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]interface{} = map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]interface{}{&#34;val&#34;: &#34;value2&#34;}
+    <span id="VALUE3">VALUE3</span> <a href="http://localhost:6060/pkg/time/">time</a>.<a href="http://localhost:6060/pkg/time/#Time">Time</a>              = <a href="http://localhost:6060/pkg/time/">time</a>.<a href="http://localhost:6060/pkg/time/#Now">Now</a>()
+    <span id="VALUE4">VALUE4</span> []<a href="http://localhost:6060/pkg/builtin/#int">int</a>                  = []<a href="http://localhost:6060/pkg/builtin/#int">int</a>{1, 2, 3, 4}
+    <span id="VALUE5">VALUE5</span> <a href="http://localhost:6060/pkg/builtin/#int">int</a>                    = 12345
+    <span id="VALUE6">VALUE6</span> interface{}            = <a href="http://localhost:6060/pkg/builtin/#nil">nil</a>
+)</pre>
+			
+		
 		
 		
 			
 			
-			<h2 id="CacheFixture">type <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=275:324#L8">CacheFixture</a>
+			<h2 id="CacheFixture">type <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=650:706#L19">CacheFixture</a>
 				<a class="permalink" href="index.html#CacheFixture">&#xb6;</a>
 				
 				
@@ -216,12 +230,12 @@
 
 			
 				
-				<h3 id="NewCacheFixture">func <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=326:381#L12">NewCacheFixture</a>
+				<h3 id="NewCacheFixture">func <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=710:770#L23">NewCacheFixture</a>
 					<a class="permalink" href="index.html#NewCacheFixture">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func NewCacheFixture(cache <a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-components-gox/cache/">ccache</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-components-gox/cache/#ICache">ICache</a>) *<a href="index.html#CacheFixture">CacheFixture</a></pre>
+				<pre>func NewCacheFixture(cache <a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-components-gox/cache/">ccache</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-components-gox/cache/#ICache">ICache</a>[<a href="http://localhost:6060/pkg/builtin/#any">any</a>]) *<a href="index.html#CacheFixture">CacheFixture</a></pre>
 				
 				
 				
@@ -229,7 +243,7 @@
 
 			
 				
-				<h3 id="CacheFixture.TestRemove">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=1286:1333#L61">TestRemove</a>
+				<h3 id="CacheFixture.TestRemove">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=2726:2773#L110">TestRemove</a>
 					<a class="permalink" href="index.html#CacheFixture.TestRemove">&#xb6;</a>
 					
 					
@@ -241,7 +255,7 @@
 				
 			
 				
-				<h3 id="CacheFixture.TestRetrieveExpired">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=1005:1061#L46">TestRetrieveExpired</a>
+				<h3 id="CacheFixture.TestRetrieveExpired">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=2421:2477#L97">TestRetrieveExpired</a>
 					<a class="permalink" href="index.html#CacheFixture.TestRetrieveExpired">&#xb6;</a>
 					
 					
@@ -253,7 +267,7 @@
 				
 			
 				
-				<h3 id="CacheFixture.TestStoreAndRetrieve">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=436:493#L18">TestStoreAndRetrieve</a>
+				<h3 id="CacheFixture.TestStoreAndRetrieve">func (*CacheFixture) <a href="http://localhost:6060/src/test/fixture/CacheFixture.go?s=831:888#L29">TestStoreAndRetrieve</a>
 					<a class="permalink" href="index.html#CacheFixture.TestStoreAndRetrieve">&#xb6;</a>
 					
 					
@@ -267,7 +281,7 @@
 		
 			
 			
-			<h2 id="LockFixture">type <a href="http://localhost:6060/src/test/fixture/LockFixture.go?s=240:285#L6">LockFixture</a>
+			<h2 id="LockFixture">type <a href="http://localhost:6060/src/test/fixture/LockFixture.go?s=269:316#L7">LockFixture</a>
 				<a class="permalink" href="index.html#LockFixture">&#xb6;</a>
 				
 				
@@ -288,7 +302,7 @@
 
 			
 				
-				<h3 id="NewLockFixture">func <a href="http://localhost:6060/src/test/fixture/LockFixture.go?s=287:337#L10">NewLockFixture</a>
+				<h3 id="NewLockFixture">func <a href="http://localhost:6060/src/test/fixture/LockFixture.go?s=320:370#L11">NewLockFixture</a>
 					<a class="permalink" href="index.html#NewLockFixture">&#xb6;</a>
 					
 					
@@ -301,7 +315,7 @@
 
 			
 				
-				<h3 id="LockFixture.TestAcquireLock">func (*LockFixture) <a href="http://localhost:6060/src/test/fixture/LockFixture.go?s=969:1020#L39">TestAcquireLock</a>
+				<h3 id="LockFixture.TestAcquireLock">func (*LockFixture) <a href="http://localhost:6060/src/test/fixture/LockFixture.go?s=1107:1158#L42">TestAcquireLock</a>
 					<a class="permalink" href="index.html#LockFixture.TestAcquireLock">&#xb6;</a>
 					
 					
@@ -313,7 +327,7 @@
 				
 			
 				
-				<h3 id="LockFixture.TestReleaseLock">func (*LockFixture) <a href="http://localhost:6060/src/test/fixture/LockFixture.go?s=1440:1491#L59">TestReleaseLock</a>
+				<h3 id="LockFixture.TestReleaseLock">func (*LockFixture) <a href="http://localhost:6060/src/test/fixture/LockFixture.go?s=1674:1725#L64">TestReleaseLock</a>
 					<a class="permalink" href="index.html#LockFixture.TestReleaseLock">&#xb6;</a>
 					
 					
@@ -325,7 +339,7 @@
 				
 			
 				
-				<h3 id="LockFixture.TestTryAcquireLock">func (*LockFixture) <a href="http://localhost:6060/src/test/fixture/LockFixture.go?s=389:443#L16">TestTryAcquireLock</a>
+				<h3 id="LockFixture.TestTryAcquireLock">func (*LockFixture) <a href="http://localhost:6060/src/test/fixture/LockFixture.go?s=428:482#L17">TestTryAcquireLock</a>
 					<a class="permalink" href="index.html#LockFixture.TestTryAcquireLock">&#xb6;</a>
 					
 					
@@ -348,13 +362,13 @@
 
 
 <div id="footer">
-Build version go1.13.15.<br>
+Build version go1.18.5.<br>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,
 and code is licensed under a <a href="http://localhost:6060/LICENSE">BSD license</a>.<br>
-<a href="http://localhost:6060/doc/tos.html">Terms of Service</a> |
-<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+<a href="https://golang.org/doc/tos.html">Terms of Service</a> |
+<a href="https://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
 </div>
 
 </div><!-- .container -->
