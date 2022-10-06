@@ -6,17 +6,17 @@ The module for working with a Redis database of type key-value contains componen
 
 The module contains the following packages:
 
-- [**Build**](https://godoc.org/github.com/pip-services3-gox/pip-services3-redis-gox/build) - factory default
-- [**Cache**](https://godoc.org/github.com/pip-services3-gox/pip-services3-redis-gox/cache) - Redis Cache Components
-- [**Lock**](https://godoc.org/github.com/pip-services3-gox/pip-services3-redis-gox/lock) - components of working with locks in Redis
+- **Build** - factory default
+- **Cache** - Redis Cache Components
+- **Lock** - components of working with locks in Redis
 
 <a name="links"></a> Quick links:
 
-* [Configuration](https://www.pipservices.org/recipies/configuration)
+* [Configuration](http://docs.pipservices.org/concepts/configuration/)
 * [API Reference](https://godoc.org/github.com/pip-services3-gox/pip-services3-redis-gox/)
 * [Change Log](CHANGELOG.md)
-* [Get Help](https://www.pipservices.org/community/help)
-* [Contribute](https://www.pipservices.org/community/contribute)
+* [Get Help](http://docs.pipservices.org/get_help/)
+* [Contribute](http://docs.pipservices.org/contribute/)
 
 ## Use
 
